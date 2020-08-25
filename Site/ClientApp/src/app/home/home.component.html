@@ -1,0 +1,8 @@
+<h1>QrFlip</h1>
+<div *ngIf="loading">
+  <h2>Loading</h2>
+</div>
+<div *ngIf="!loading">
+  <h2>My ID: {{id}}</h2>
+  <qrcode [qrdata]="id" [width]="256" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+</div>
