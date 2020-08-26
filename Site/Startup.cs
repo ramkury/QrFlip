@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Site.Hubs;
+using Site.Storage;
 
 namespace Site {
 	public class Startup {
@@ -19,6 +20,7 @@ namespace Site {
 		public void ConfigureServices(IServiceCollection services) {
 			services.AddControllersWithViews();
 			services.AddSignalR();
+			services.AddSingleton<ConnectedClientStorage>();
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration => {
 				configuration.RootPath = "ClientApp/dist";

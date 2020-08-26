@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
-import { Subject, Observable, from } from 'rxjs';
+import { Subject, Observable, from, BehaviorSubject } from 'rxjs';
 import { tap, switchMap, map } from "rxjs/operators";
 import { HttpClient } from '@angular/common/http';
 import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
@@ -13,10 +13,15 @@ const apiRoute = "pairing";
 export class PairingService {
 
   private hub: HubConnection;
-  private subject = new Subject<string>();
+  private urlChanged = new Subject<string>();
+  private aliasChanged = new BehaviorSubject<string>(null);
 
-  public get HubObservable(): Observable<string> {
-    return this.subject.asObservable();
+  public get UrlChanged(): Observable<string> {
+    return this.urlChanged.asObservable();
+  }
+
+  public get AliasChanged(): Observable<string> {
+    return this.aliasChanged.asObservable();
   }
 
   constructor(private http: HttpClient) { }
@@ -30,8 +35,13 @@ export class PairingService {
 
     this.hub.on('transferUrl', (url: string) => {
       console.log('transferUrl message received', url);
-      this.subject.next(url);
+      this.urlChanged.next(url);
     });
+
+    this.hub.on('aliasAssigned', (alias: string) => {
+      console.log('aliasAssignment message received', alias)
+      this.aliasChanged.next(alias);
+    })
   }
 
 }

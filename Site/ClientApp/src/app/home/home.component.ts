@@ -9,7 +9,6 @@ import { APP_BASE_HREF } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
   public id: string;
-  public loading: boolean;
 
   constructor(private pairingService: PairingService) {
 
@@ -18,9 +17,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.id = "ABCD1234";
     this.pairingService.startConnection();
-    this.pairingService.HubObservable.subscribe(url => {
+    this.pairingService.UrlChanged.subscribe(url => {
       alert(`Navigating to URL: ${url}`);
       location.href = url;
     });
+    this.pairingService.AliasChanged.subscribe(alias => this.id = alias);
   }
 }
