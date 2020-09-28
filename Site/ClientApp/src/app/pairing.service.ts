@@ -4,6 +4,7 @@ import { Subject, Observable, from, BehaviorSubject } from 'rxjs';
 import { tap, switchMap, map } from "rxjs/operators";
 import { HttpClient } from '@angular/common/http';
 import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
+import { RedirectRequest } from './api/pairing';
 
 const apiRoute = "pairing";
 
@@ -42,6 +43,10 @@ export class PairingService {
       console.log('aliasAssignment message received', alias)
       this.aliasChanged.next(alias);
     })
+  }
+
+  public sendRedirect(request: RedirectRequest): Observable<void> {
+    return this.http.post<void>(apiRoute, request);
   }
 
 }

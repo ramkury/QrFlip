@@ -4,5 +4,21 @@
 </div>
 <div *ngIf="id">
   <h2>My ID: {{id}}</h2>
-  <qrcode [qrdata]="id" [width]="256" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+  <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
 </div>
+<div>
+  <form [formGroup]="form" (ngSubmit)="submitForm()">
+    <mat-form-field>
+      <input matInput formControlName="targetId" placeholder="Target ID">
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <input matInput formControlName="url" placeholder="URL">
+    </mat-form-field>
+    <br/>
+    <button mat-raised-button type="submit" [disabled]="!form.valid">Submit</button>
+  </form>
+</div>
+<p><b>Errors: </b>{{form.errors | json}}</p>
+<p><b>Value: </b>{{form.value | json}}</p>
+<p><b>State: </b>{{form.valid | json}}</p>
